@@ -3,12 +3,6 @@ const path = require('path');
 const { number } = require('yargs');
 const contactsPath = path.resolve(__dirname, 'db', 'contacts.json');
 
-// module.exports.listContacts= async function() {
-//     const contacts = await fs
-//     .readFile(contactsPath, {encoding: 'utf-8'})
-//     .then((data) => JSON.parse(data));
-//     console.table(contacts)
-// };
 async function listContacts() {
   try {
     const data = await fs.readFile(contactsPath, { encoding: 'utf-8' });
