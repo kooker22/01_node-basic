@@ -1,32 +1,36 @@
-const { v4: uuid } = require('uuid');
-const db = require('../db');
+const Contact = require("../schemas/contacts");
 
 class ContactsRepository {
-  listContacts() {
-    return db.get('contacts').value();
+  constructor() {
+    this.model = Contact;
   }
-  getById(id) {
- 
-    return db.get('contacts').find({ id }).value();
+  async listContacts() {
+    const result = await this.model.find({});
+    return result;
   }
-  addContact(body) {
-    const id = uuid();
-    const record = {
-      id,
-      ...body,
-    };
-    db.get('contacts').push(record).write();
-    return record;
+  async getById(id) {
+    const result = await this.model.findOne({ _id: id });
+    return result;
   }
-  updateContact(id, body) {
-    const record = db.get('contacts').find({ id }).assign(body).value();
-    db.write();
-
-    return record.id ? record : null;
+  async addContact(body) {
+    const result = await this.model.create(body);
+    return result;
   }
-  removeContact(id) {
-    const [record] = db.get('contacts').remove({ id }).write();
-    return record;
+  async updateContact(id, body) {
+    const result = await this.model.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      { ...body },
+      { new: true }
+    );
+    return result;
+  }
+  async removeContact(id) {
+    const result = await this.model.findByIdAndRemove({
+      _id: id,
+    });
+    return result;
   }
 }
 

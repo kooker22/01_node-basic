@@ -1,12 +1,12 @@
-const { HttpCode } = require('../helpers/constants');
-const { ContactsService } = require('../services');
+const { HttpCode } = require("../helpers/constants");
+const { ContactsService } = require("../services");
 const contactsService = new ContactsService();
 
-const listContacts = (req, res, next) => {
+const listContacts = async (req, res, next) => {
   try {
-    const contacts = contactsService.listContacts();
+    const contacts = await contactsService.listContacts();
     res.status(HttpCode.OK).json({
-      status: 'success',
+      status: "success",
       code: HttpCode.OK,
       data: {
         contacts,
@@ -16,13 +16,13 @@ const listContacts = (req, res, next) => {
     next(e);
   }
 };
-const getById = (req, res, next) => {
+const getById = async (req, res, next) => {
   try {
-    const contact = contactsService.getById(req.params);
+    const contact = await contactsService.getById(req.params);
 
     if (contact) {
       return res.status(HttpCode.OK).json({
-        status: 'success',
+        status: "success",
         code: HttpCode.OK,
         data: {
           contact,
@@ -31,8 +31,8 @@ const getById = (req, res, next) => {
     } else {
       return next({
         status: HttpCode.NOT_FOUND,
-        message: 'Not found contact',
-        data: 'Not Found',
+        message: "Not found contact",
+        data: "Not Found",
       });
     }
   } catch (e) {
@@ -40,22 +40,22 @@ const getById = (req, res, next) => {
   }
 };
 
-const addContact = (req, res, next) => {
+const addContact = async (req, res, next) => {
   try {
-    const contact = contactsService.addContact(req.body);
+    const contact = await contactsService.addContact(req.body);
     if (
       req.body.name === undefined ||
       req.body.email === undefined ||
       req.body.phone === undefined
     ) {
       return res.status(HttpCode.BAD_REQUEST).json({
-        status: 'error',
+        status: "error",
         code: HttpCode.BAD_REQUEST,
-        message: 'missing required name field',
+        message: "missing required name field",
       });
     } else {
       res.status(HttpCode.CREATED).json({
-        status: 'success',
+        status: "success",
         code: HttpCode.CREATED,
         data: {
           contact,
@@ -67,9 +67,9 @@ const addContact = (req, res, next) => {
   }
 };
 
-const updateContact = (req, res, next) => {
+const updateContact = async (req, res, next) => {
   try {
-    const contact = contactsService.updateContact(req.params, req.body);
+    const contact = await contactsService.updateContact(req.params, req.body);
     console.log(req.body.name);
     if (
       req.body.name === undefined ||
@@ -77,13 +77,13 @@ const updateContact = (req, res, next) => {
       req.body.phone === undefined
     ) {
       return res.status(HttpCode.BAD_REQUEST).json({
-        status: 'error',
+        status: "error",
         code: HttpCode.BAD_REQUEST,
-        message: 'missing fields',
+        message: "missing fields",
       });
     } else if (contact) {
       return res.status(HttpCode.OK).json({
-        status: 'success',
+        status: "success",
         code: HttpCode.OK,
         data: {
           contact,
@@ -92,8 +92,8 @@ const updateContact = (req, res, next) => {
     } else {
       return next({
         status: HttpCode.NOT_FOUND,
-        message: 'Not found contact',
-        data: 'Not Found',
+        message: "Not found contact",
+        data: "Not Found",
       });
     }
   } catch (e) {
@@ -101,21 +101,21 @@ const updateContact = (req, res, next) => {
   }
 };
 
-const removeContact = (req, res, next) => {
+const removeContact =async (req, res, next) => {
   try {
-    const contact = contactsService.removeContact(req.params);
+    const contact =await contactsService.removeContact(req.params);
     console.log(contact);
     if (contact) {
       return res.status(HttpCode.OK).json({
-        status: 'success',
+        status: "success",
         code: HttpCode.OK,
         message: `contact ${contact.id} deleted`,
       });
     } else {
       return next({
         status: HttpCode.NOT_FOUND,
-        message: 'Not found contact',
-        data: 'Not Found',
+        message: "Not found contact",
+        data: "Not Found",
       });
     }
   } catch (e) {
