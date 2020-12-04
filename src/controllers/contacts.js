@@ -109,7 +109,7 @@ const removeContact =async (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: "success",
         code: HttpCode.OK,
-        message: `contact ${contact.id} deleted`,
+        message: `contact ${contact.name} deleted`,
       });
     } else {
       return next({
