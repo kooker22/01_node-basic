@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const SALT_FACTOR = 10;
 const { Schema } = mongoose;
 const usersSchema = new Schema({
+  avatarURL: String,
   email: String,
   password: String,
   subscription: {
@@ -23,7 +24,9 @@ usersSchema.pre("save", async function (next) {
 });
 
 usersSchema.methods.validPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  const a =  await bcrypt.compare(password, this.password);
+  console.log(a)
+  return a
 };
 const User = mongoose.model("user", usersSchema);
 module.exports = User;

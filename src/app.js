@@ -9,6 +9,7 @@ const { HttpCode } = require("./helpers/constants");
 app.use(morgan("combined"));
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 app.use("/auth/", usersRouters);
 app.use("/api/contacts", contactsRouters);
 app.use("/users", usersRouters);

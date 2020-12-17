@@ -76,7 +76,6 @@ const updateContact = async (req, res, next) => {
   try {
     const userId = req.user.id;
     contact = await contactsService.updateContact(userId, req.params, req.body);
-    console.log(req.body.name);
     if (
       req.body.name === undefined ||
       req.body.email === undefined ||
@@ -112,7 +111,7 @@ const removeContact = async (req, res, next) => {
     const userId = req.user.id;
 
     const contact = await contactsService.removeContact(userId, req.params);
-    console.log(contact);
+  
     if (contact) {
       return res.status(HttpCode.OK).json({
         status: "success",
